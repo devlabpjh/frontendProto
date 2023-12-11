@@ -17,7 +17,7 @@ export const Layout = (props) => {
       }}
     >
       <Grid
-        container
+        container 
         sx={{ flex: '1 1 auto' }}
       >
         <Grid
@@ -40,21 +40,21 @@ export const Layout = (props) => {
               width: '100%'
             }}
           >
-            <Box
-              component={NextLink}
-              href="/"
-              sx={{
-                display: 'inline-flex',
-                height: 32,
-                width: 32
-              }}
-            >
-              <Logo />
-            </Box>
+              {/* <Box
+                component={NextLink}
+                href="/"
+                sx={{
+                  display: 'inline-flex',
+                  height: 32,
+                  width: 32
+                }}
+              >
+                <Logo />
+              </Box> */}
           </Box>
           {children}
         </Grid>
-        <Grid
+        {/* <Grid
           xs={12}
           lg={6}
           sx={{
@@ -100,7 +100,7 @@ export const Layout = (props) => {
               src="/assets/auth-illustration.svg"
             />
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

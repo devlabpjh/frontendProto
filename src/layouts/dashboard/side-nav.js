@@ -42,7 +42,7 @@ export const SideNav = (props) => {
           height: '100%'
         }}
       >
-        <Box sx={{ p: 3 }}>
+        {/* <Box sx={{ p: 3 }}>
           <Box
             component={NextLink}
             href="/"
@@ -87,7 +87,7 @@ export const SideNav = (props) => {
               <ChevronUpDownIcon />
             </SvgIcon>
           </Box>
-        </Box>
+        </Box> */}
         <Divider sx={{ borderColor: 'neutral.700' }} />
         <Box
           component="nav"
@@ -124,7 +124,7 @@ export const SideNav = (props) => {
           </Stack>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
-        <Box
+        {/* <Box
           sx={{
             px: 2,
             py: 3
@@ -173,7 +173,7 @@ export const SideNav = (props) => {
           >
             Pro Live Preview
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Scrollbar>
   );
