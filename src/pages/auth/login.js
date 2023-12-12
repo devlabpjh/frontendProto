@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { loginStudent } from "src/services/api";
 import {
   Alert,
   Box,
@@ -42,7 +43,7 @@ const Page = () => {
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
       password: Yup.string().max(255).required("Password is required"),
     }),
-    onSubmit: async (values, helpers) => {  
+    onSubmit: async (values, helpers) => {
       try {
         await auth.signIn(values.email, values.password);
         router.push("/");
@@ -69,33 +70,32 @@ const Page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    client
-      .get("/api/user")
-      .then(function (res) {
-        setCurrentUser(true);
-      })
-      .catch(function (error) {
-        setCurrentUser(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   client
+  //     .get("/api/user")
+  //     .then(function (res) {
+  //       setCurrentUser(true);
+  //     })
+  //     .catch(function (error) {
+  //       setCurrentUser(false);
+  //     });
+  // }, []);
 
   function submitLogin(e) {
     e.preventDefault();
-    client
-      .post("/api/login", {
-        email: email,
-        password: password,
-      })
+    loginStudent(email, password)
       .then(function (res) {
-        console.log(res)
+        console.log(res);
         console.log(res.data.state);
 
-        if (res.data.state == "valid"){
+        if (res.data.state === "valid") {
           setCurrentUser(true);
-          router.push("/customers/"); 
+          router.push("/customers/");
         }
-
+      })
+      .catch(function (error) {
+        console.error("Error during login:", error);
+        // Handle login error here
       });
   }
 
@@ -148,7 +148,7 @@ const Page = () => {
               /> */}
             </Tabs>
             {method === "email" && (
-              <form noValidate onSubmit={e => submitLogin(e)}>
+              <form noValidate onSubmit={(e) => submitLogin(e)}>
                 <Stack spacing={3}>
                   <TextField
                     error={!!(formik.touched.email && formik.errors.email)}
@@ -158,7 +158,8 @@ const Page = () => {
                     name="email"
                     onBlur={formik.handleBlur}
                     type="email"
-                    value={email} onChange={e => setEmail(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <TextField
                     error={!!(formik.touched.password && formik.errors.password)}
@@ -169,7 +170,8 @@ const Page = () => {
                     onBlur={formik.handleBlur}
                     // onChange={formik.handleChange}
                     type="password"
-                    value={password} onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Stack>
                 <FormHelperText sx={{ mt: 1 }}>Optionally you can skip.</FormHelperText>

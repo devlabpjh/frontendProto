@@ -1,52 +1,46 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import Head from 'next/head';
-import { subDays, subHours } from 'date-fns';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
-import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { CustomersTable } from 'src/sections/customer/customers-table';
-import { CustomersSearch } from 'src/sections/customer/customers-search';
-import { applyPagination } from 'src/utils/apply-pagination';
-import axios from 'axios';
+import { useCallback, useMemo, useState, useEffect } from "react";
+import Head from "next/head";
+import { subDays, subHours } from "date-fns";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
+import { useSelection } from "src/hooks/use-selection";
+import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
+import { CustomersTable } from "src/sections/customer/customers-table";
+import { CustomersSearch } from "src/sections/customer/customers-search";
+import { applyPagination } from "src/utils/apply-pagination";
+import axios from "axios";
 
 const now = new Date();
 
 const data = [
   {
-    id: '5e887ac47eed253091be10cb',
+    id: "5e887ac47eed253091be10cb",
     address: {
-      city: 'Cleveland',
-      country: 'USA',
-      state: 'Ohio',
-      street: '2849 Fulton Street'
+      city: "Cleveland",
+      country: "USA",
+      state: "Ohio",
+      street: "2849 Fulton Street",
     },
-    avatar: '/assets/avatars/avatar-carson-darrin.png',
+    avatar: "/assets/avatars/avatar-carson-darrin.png",
     createdAt: subDays(subHours(now, 7), 1).getTime(),
-    email: 'carson.darrin@devias.io',
-    name: 'Carson Darrin',
-    phone: '304-428-3097'
+    email: "carson.darrin@devias.io",
+    name: "Carson Darrin",
+    phone: "304-428-3097",
   },
 ];
 
 const useCustomers = (page, rowsPerPage) => {
-  return useMemo(
-    () => {
-      return applyPagination(data, page, rowsPerPage);
-    },
-    [page, rowsPerPage]
-  );
+  return useMemo(() => {
+    return applyPagination(data, page, rowsPerPage);
+  }, [page, rowsPerPage]);
 };
 
 const useCustomerIds = (customers) => {
-  return useMemo(
-    () => {
-      return customers.map((customer) => customer.id);
-    },
-    [customers]
-  );
+  return useMemo(() => {
+    return customers.map((customer) => customer.id);
+  }, [customers]);
 };
 
 const Page = () => {
@@ -56,107 +50,61 @@ const Page = () => {
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
 
-  const handlePageChange = useCallback(
-    (event, value) => {
-      setPage(value);
-    },
-    []
-  );
+  const handlePageChange = useCallback((event, value) => {
+    setPage(value);
+  }, []);
 
-  const handleRowsPerPageChange = useCallback(
-    (event) => {
-      setRowsPerPage(event.target.value);
-    },
-    []
-  );
+  const handleRowsPerPageChange = useCallback((event) => {
+    setRowsPerPage(event.target.value);
+  }, []);
 
-  
-  const [data, setData] = useState([]);
+  const [apidata, setapiData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/firstdatamodelretrieve');
-        console.log(respone.data);
-        setData(response.data);
+        const response = await axios.get("http://127.0.0.1:8000/api/firstdatamodelretrieve");
+        setapiData(response.data); // Ensure that response.data is an array or set a default value
+        console.log("Getting Data", response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []); 
+  }, []);
+
+  console.log("Data Length", data.length);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
-
     <>
       <Head>
-        <title>
-          Customers | Devias Kit
-        </title>
+        <title>Customers | Devias Kit</title>
       </Head>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
         <Container maxWidth="xl">
           <Stack spacing={3}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              spacing={4}
-            >
+            <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">
-                  Data Form
-                </Typography>
-                  {/* <Stack
-                    alignItems="center"
-                    direction="row"
-                    spacing={1}
-                  >
-                    <Button
-                      color="inherit"
-                      startIcon={(
-                        <SvgIcon fontSize="small">
-                          <ArrowUpOnSquareIcon />
-                        </SvgIcon>
-                      )}
-                    >
-                      Import
-                    </Button>
-                    <Button
-                      color="inherit"
-                      startIcon={(
-                        <SvgIcon fontSize="small">
-                          <ArrowDownOnSquareIcon />
-                        </SvgIcon>
-                      )}
-                    >
-                      Export
-                    </Button>
-                  </Stack> */}
+                <Typography variant="h4">Data Form</Typography>
               </Stack>
-              {/* <div>
-                <Button
-                  startIcon={(
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                >
-                  Add
-                </Button>
-              </div> */}
             </Stack>
-            {/* <CustomersSearch /> */}
             <CustomersTable
-              count={data.length}
-              items={data}
+              count={apidata.length}
+              items={apidata}
               onDeselectAll={customersSelection.handleDeselectAll}
               onDeselectOne={customersSelection.handleDeselectOne}
               onPageChange={handlePageChange}
@@ -174,10 +122,6 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => (
-  <DashboardLayout>
-    {page}
-  </DashboardLayout>
-);
+Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Page;

@@ -56,31 +56,31 @@ export const CustomersTable = (props) => {
                   />
                 </TableCell>
                 <TableCell>
-                  Name
+                  ID
                 </TableCell>
                 <TableCell>
-                  Email
+                  Item1
                 </TableCell>
                 <TableCell>
-                  Location
+                  Item2
                 </TableCell>
                 <TableCell>
-                  Phone
+                  Item3
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   Signed Up
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+                  const isSelected = selected.includes(customer.id);
+                // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={customer.ID}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -96,30 +96,16 @@ export const CustomersTable = (props) => {
                       />
                     </TableCell>
                     <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {customer.name}
-                        </Typography>
-                      </Stack>
+                      {customer.ID}
                     </TableCell>
                     <TableCell>
-                      {customer.email}
+                      {customer.item1}
                     </TableCell>
                     <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
+                      {customer.item2}
                     </TableCell>
                     <TableCell>
-                      {customer.phone}
-                    </TableCell>
-                    <TableCell>
-                      {createdAt}
+                      {customer.item3}
                     </TableCell>
                   </TableRow>
                 );
