@@ -12,3 +12,14 @@ export async function loginStudent(email, password) {
     throw error;
   }
 }
+
+export async function logout() {
+  try {
+    const response = await axios.post("http://127.0.0.1:8000/api/logout", {
+       withCredentials: true,
+      });
+    return response.data; // You might want to return some data from the server upon successful logout
+  } catch (error) {
+    throw error;
+  }
+}

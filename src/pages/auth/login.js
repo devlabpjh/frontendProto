@@ -86,9 +86,9 @@ const Page = () => {
     loginStudent(email, password)
       .then(function (res) {
         console.log(res);
-        console.log(res.data.state);
+        console.log(res.state);
 
-        if (res.data.state === "valid") {
+        if (res.state === "valid") {
           setCurrentUser(true);
           router.push("/customers/");
         }
